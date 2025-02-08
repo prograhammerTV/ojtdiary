@@ -52,7 +52,7 @@ window.loginUser = function () {
     signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             alert("Login successful!");
-            window.location.href = "inputdata.html"; // Redirect to diary system
+            window.location.href = "index.html"; // Redirect to diary system
         })
         .catch((error) => {
             alert("Error: " + error.message);
