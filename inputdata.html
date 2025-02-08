@@ -34,6 +34,8 @@
     <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-app.js";
 import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-database.js";
+import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-auth.js"; // ✅ Corrected Import
+
 
 // Firebase Configuration
 const firebaseConfig = {
@@ -50,6 +52,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
+const auth = getAuth(app); // ✅ Define auth
 
 // Save Diary Entry
 window.saveDiaryEntry = function () {
@@ -91,6 +94,16 @@ window.saveDiaryEntry = function () {
     });
 };
 
+// Logout User
+window.logoutUser = function () {
+    signOut(auth).then(() => {
+        alert("Logout successful!");
+        window.location.href = "index.html";
+    }).catch((error) => {
+        alert("Error logging out: " + error.message);
+    });
+};
+
 
 // Load Diary Entries
 window.loadDiaryEntries = function () {
@@ -121,15 +134,7 @@ window.loadDiaryEntries = function () {
 // Load entries on page load
 window.onload = loadDiaryEntries;
 
-// Logout User
-window.logoutUser = function () {
-    signOut(auth).then(() => {
-        alert("Logout successful!");
-        window.location.href = "index.html";
-    }).catch((error) => {
-        alert("Error logging out: " + error.message);
-    });
-};
+
 
 
 
