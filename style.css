@@ -1,0 +1,172 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #F4F4F4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Main Container */
+.container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Saved Entries Container */
+.container2 {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 900px;
+    overflow-x: hidden; /* Prevents horizontal overflow */
+    overflow-y: auto; /* Allows vertical scrolling if needed */
+}
+
+/* Responsive Grid for Entries */
+#diaryEntries {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Ensures responsiveness */
+    gap: 15px;
+    max-width: 100%;
+    padding: 10px;
+}
+
+/* Individual Diary Entry */
+.diary-entry {
+    background: #f1f1f1;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    word-wrap: break-word;
+}
+
+.diary-entry h4 {
+    margin: 0;
+    color: #00A19A; /* Green */
+}
+
+.diary-entry p {
+    margin: 5px 0;
+    color: #333;
+}
+
+/* Entry Form Section */
+.entry-form {
+    background: #FFFFFF;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+/* Input Fields */
+input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Buttons */
+button {
+    background: #00A19A; /* Sagility Green */
+    color: white;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #1C265F; /* Dark Blue Hover */
+}
+
+/* Headings */
+h2, h3 {
+    color: #1C265F;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+/* Ensure consistency for small content blocks */
+.data-entry {
+    flex-basis: 10rem;
+    max-width: 10rem;
+}
+
+/* ========== Responsive Design ========== */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .container,
+    .container2 {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    #diaryEntries {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Smaller cards on mobile */
+        padding: 5px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+    }
+
+    .diary-entry {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    input {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 8px;
+    }
+}
+.logout-btn {
+    background: #d9534f; /* Red for logout */
+    margin-top: 10px;
+    margin-bottom: 30px;
+    width: 400px;
+}
+
+.logout-btn:hover {
+    background: #c9302c;
+}
+

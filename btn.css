@@ -1,0 +1,8 @@
+.logout-btn {
+    background: #d9534f; /* Red for logout */
+    margin-top: 10px;
+}
+
+.logout-btn:hover {
+    background: #c9302c;
+}

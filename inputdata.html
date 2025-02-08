@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OJT Diary System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <button onclick="logoutUser()" class="logout-btn">Logout</button>
+
+    <div class="container">
+        <h2>OJT Diary System</h2>
+
+        <label for="dateInput">Date:</label>
+        <input type="date" id="dateInput">
+
+        <label for="dayInput">Day:</label>
+        <input type="text" id="dayInput" placeholder="Enter Day">
+
+        <label for="descInput">Description:</label>
+        <input type="text" id="descInput" placeholder="Enter Description">
+
+        <button onclick="saveDiaryEntry()">Save Entry</button>
+
+       
+    </div>  
+    <div class="container2">
+        <h3>Saved Entries</h3>
+        <div id="diaryEntries"></div>
+     </div>
+
+    <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-app.js";
+import { getDatabase, ref, get, update } from "https://www.gstatic.com/firebasejs/11.3.0/firebase-database.js";
+
+// Firebase Configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyA_7gC0BMZcGicBXwNF1oawoMgvRywA55Y",
+    authDomain: "ojt-diary-2025.firebaseapp.com",
+    databaseURL: "https://ojt-diary-2025-default-rtdb.firebaseio.com",
+    projectId: "ojt-diary-2025",
+    storageBucket: "ojt-diary-2025.appspot.com",
+    messagingSenderId: "803889094828",
+    appId: "1:803889094828:web:1352e92e5279a2b768ff09",
+    measurementId: "G-XBRNNCREGV"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+
+// Save Diary Entry
+window.saveDiaryEntry = function () {
+    const dateValue = document.getElementById("dateInput").value;
+    const day = document.getElementById("dayInput").value;
+    const description = document.getElementById("descInput").value;
+
+    if (!dateValue || !day || !description) {
+        alert("Please fill all fields.");
+        return;
+    }
+
+    // Convert date format: "YYYY-MM-DD" → "February-2-2025"
+    const dateObj = new Date(dateValue);
+    const formattedDate = dateObj.toLocaleString('en-US', { month: 'long' }) + 
+                          "-" + dateObj.getDate() + 
+                          "-" + dateObj.getFullYear();
+
+    const diaryRef = ref(database, "diary/" + formattedDate);
+
+    // Fetch existing data and append new description
+    get(diaryRef).then((snapshot) => {
+        let data = snapshot.val() || { day: day };
+
+        // Find next available description slot
+        let descIndex = 1;
+        while (data[`Description${descIndex}`]) {
+            descIndex++;
+        }
+        data[`Description${descIndex}`] = description;
+
+        // Update database
+        update(diaryRef, data).then(() => {
+            alert("Entry saved successfully!");
+            loadDiaryEntries(); // Refresh the displayed entries
+        }).catch((error) => {
+            console.error("Error saving entry:", error);
+        });
+    });
+};
+
+
+// Load Diary Entries
+window.loadDiaryEntries = function () {
+    const diaryRef = ref(database, "diary");
+
+    get(diaryRef).then((snapshot) => {
+        const diaryEntries = document.getElementById("diaryEntries");
+        diaryEntries.innerHTML = ""; // Clear old data
+
+        if (snapshot.exists()) {
+            Object.entries(snapshot.val()).forEach(([date, entry]) => {
+                let entryHtml = `<div class="diary-entry">
+                    <h4>${date} - ${entry.day}</h4>`;
+                Object.keys(entry).forEach((key) => {
+                    if (key.startsWith("Description")) {
+                        entryHtml += `<p>${key}: ${entry[key]}</p>`;
+                    }
+                });
+                entryHtml += "</div>";
+                diaryEntries.innerHTML += entryHtml;
+            });
+        } else {
+            diaryEntries.innerHTML = "<p>No diary entries found.</p>";
+        }
+    });
+};
+
+// Load entries on page load
+window.onload = loadDiaryEntries;
+
+// Logout User
+window.logoutUser = function () {
+    signOut(auth).then(() => {
+        alert("Logout successful!");
+        window.location.href = "login.html";
+    }).catch((error) => {
+        alert("Error logging out: " + error.message);
+    });
+};
+
+
+
+    </script>
+</body>
+</html>
